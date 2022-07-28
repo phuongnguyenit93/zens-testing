@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Min - Max</title>
+</head>
+<body>
+    <label for="input-number">Nhập 5 số nguyên dương (Cách nhau bởi dấu cách)</label>
+    <input id="input-number" type="text">
+    <br>
+    <button onclick="getMinMaxSum()">Tính toán Min-Max</button>
+    <button onclick="getTotalValueClick()">Tính tổng array</button>
+    <button onclick="findMinClick()">Tính Min</button>
+    <button onclick="findMaxClick()">Tính Max</button>
+    <button onclick="filterOddValueClick()">Trả về dãy lẻ</button>
+    <button onclick="filterEvenValueClick()">Trả về dãy chẵn</button>
+    <br>
+    <p id="result"></p>
+</body>
+<script>
+
+    const $ = document.querySelector.bind(document)
+
+    function convertStringToArray () {
+        let string = $("#input-number").value.trim();
+        let array = string.split(/ +/)
+
+        if (array.length != 5) {
+            throw new Error ("Chỉ được nhập đúng 5 phần tử")
+        }
+
+        if (array.filter (each => Number.isInteger(Number(each))).length != 5) {
+            throw new Error ("Cả 5 phần tử phải là số nguyên")
+        }
+
+        return array.map(each => Number(each));
+    }
+
+    function getTotalValueClick() {
+        let array = convertStringToArray();
+        let totalArray = array.reduce((total,each) => each + total,0)
+
+        $("#result").innerHTML = `Tổng các phần tử trong dãy là ${totalArray}`
+
+        return totalArray
+    }
+
+    function findMinClick () {
+        let array = convertStringToArray();
+        let minArray = Math.min(...array)
+
+        $("#result").innerHTML = `Giá trị Min trong array là ${minArray}`
+        
+        return minArray;
+    }
+
+    function findMaxClick () {
+        let array = convertStringToArray();
+        let maxArray = Math.max(...array)
+
+        $("#result").innerHTML = `Giá trị Max trong array là ${maxArray}`
+
+        return maxArray;
+
+    }
+
+    function filterOddValueClick() {
+        let array = convertStringToArray();
+        let oddArray = array.filter(each => each % 2 != 0)
+
+        $("#result").innerHTML = `Các phần tử lẻ trong dãy là: ${oddArray.length != 0 ? oddArray : "Không có"}` 
+    }
+
+    function filterEvenValueClick() {
+        let array = convertStringToArray();
+        let evenArray = array.filter(each => each % 2 == 0)
+
+        $("#result").innerHTML = `Các phần tử chẵn trong dãy là: ${evenArray.length != 0 ? evenArray : "Không có"}` 
+    }
+
+    function getMinMaxSum() {
+        let total = getTotalValueClick()
+        let minArray = findMinClick();
+        let maxArray = findMaxClick();
+
+        $("#result").innerHTML = `${total - maxArray} ${total - minArray}`
+    }
+</script>
+</html>
